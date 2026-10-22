@@ -1,0 +1,31 @@
+{
+  "name": "crypto-news-verifier-cli",
+  "version": "1.0.0",
+  "description": "Checks crypto news headlines against real market data and logs a practice (paper) trade with a full reasoning trail. Zero dependencies, no real funds moved.",
+  "bin": {
+    "crypto-news-verifier": "./crypto_news_verifier.js"
+  },
+  "main": "crypto_news_verifier.js",
+  "scripts": {
+    "test": "node test_crypto_news_verifier.js"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "MIT",
+  "author": "kleogeos",
+  "keywords": [
+    "crypto",
+    "ai-agent",
+    "cli",
+    "zero-dependencies",
+    "news",
+    "hackathon",
+    "open-source"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kleogeos/crypto-news-verifier-cli"
+  },
+  "homepage": "https://kleogeos.github.io/freelancer-tools/"
+}
