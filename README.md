@@ -5,7 +5,8 @@ a **practice (paper) trade** with a repeatable reasoning trail. No real funds
 ever move — every decision is simulated and logged to a JSON ledger so the
 evidence behind each verdict can be audited.
 
-Zero dependencies — Python standard library only (`urllib`, `xml.etree`).
+Zero dependencies — Python standard library only (`urllib`, `xml.etree`), plus
+a matching Node.js port (`crypto_news_verifier.js`, built-ins only: `https`, `fs`).
 
 ## What it does
 
@@ -27,6 +28,10 @@ Zero dependencies — Python standard library only (`urllib`, `xml.etree`).
 
 ```bash
 python3 crypto_news_verifier.py --source coindesk --limit 20 --ledger ledger.json
+# or, same behavior, Node:
+node crypto_news_verifier.js --source coindesk --limit 20 --ledger ledger.json
+# or straight from GitHub, no clone:
+npx github:kleogeos/crypto-news-verifier-cli --source coindesk --limit 20
 ```
 
 Example output:
@@ -57,7 +62,10 @@ same zero-deps philosophy.
   money is traded.
 - Sentiment classification is a transparent keyword rule set, not an ML
   model — it will miss nuance, which is why the matched words are always
-  logged alongside the verdict.
+  logged alongside the verdict. Matching uses word boundaries (not raw
+  substring search) so e.g. "ban" doesn't fire on "bank**ing**" or "ada"
+  (Cardano) on "Can**ada**" — a false positive caught by running the tool
+  against a live feed, now covered by regression tests in both ports.
 - Price data comes from CoinGecko's free public endpoint and can occasionally
   be delayed or rate-limited.
 
