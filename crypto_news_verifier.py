@@ -38,14 +38,19 @@ TOKENS = {
 }
 
 POSITIVE_WORDS = [
-    "surge", "rally", "soar", "adopt", "approve", "approval", "gain", "gains",
-    "bullish", "breakout", "record high", "all-time high", "jump", "jumps",
-    "rebound", "recover", "partnership", "launch", "upgrade", "inflow",
+    "surge", "surges", "surged", "rally", "rallies", "rallied", "soar", "soars",
+    "soared", "adopt", "adopts", "adopted", "approve", "approves", "approved",
+    "approval", "gain", "gains", "bullish", "breakout", "record high",
+    "all-time high", "jump", "jumps", "rebound", "rebounds", "rebounded",
+    "recover", "recovers", "recovered", "partnership", "launch", "launches",
+    "launched", "upgrade", "upgrades", "upgraded", "inflow",
 ]
 NEGATIVE_WORDS = [
-    "crash", "hack", "hacked", "exploit", "lawsuit", "ban", "banned", "dump",
+    "crash", "crashes", "crashed", "hack", "hacked", "exploit", "exploits",
+    "exploited", "lawsuit", "ban", "banned", "dump", "dumps", "dumped",
     "bearish", "sell-off", "selloff", "fraud", "seize", "seized", "plunge",
-    "collapse", "outflow", "liquidation", "liquidated", "fine", "sanction",
+    "plunges", "plunged", "collapse", "collapses", "collapsed", "outflow",
+    "liquidation", "liquidated", "fine", "sanction",
 ]
 
 CONFIRM_THRESHOLD = 1.5  # % 24h move considered a "clear" move
@@ -82,15 +87,19 @@ def match_tokens(headline):
     lower = headline.lower()
     matched = []
     for name, (gecko_id, keywords) in TOKENS.items():
-        if any(kw in lower for kw in keywords):
+        if any(_word_present(kw, lower) for kw in keywords):
             matched.append((name, gecko_id))
     return matched
 
 
+def _word_present(word, lower_text):
+    return re.search(r"\b" + re.escape(word) + r"\b", lower_text) is not None
+
+
 def classify_sentiment(headline):
     lower = headline.lower()
-    hits_pos = [w for w in POSITIVE_WORDS if w in lower]
-    hits_neg = [w for w in NEGATIVE_WORDS if w in lower]
+    hits_pos = [w for w in POSITIVE_WORDS if _word_present(w, lower)]
+    hits_neg = [w for w in NEGATIVE_WORDS if _word_present(w, lower)]
     if hits_pos and not hits_neg:
         return "positive", hits_pos
     if hits_neg and not hits_pos:
