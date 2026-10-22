@@ -31,7 +31,7 @@ class TestSentiment(unittest.TestCase):
     def test_positive(self):
         s, words = cnv.classify_sentiment("Bitcoin surges to new record high")
         self.assertEqual(s, "positive")
-        self.assertIn("surge", words)
+        self.assertIn("surges", words)
 
     def test_negative(self):
         s, words = cnv.classify_sentiment("Ethereum hacked: exploit drains funds")
@@ -42,6 +42,17 @@ class TestSentiment(unittest.TestCase):
         s, words = cnv.classify_sentiment("Global markets await Fed rate decision this week")
         self.assertEqual(s, "neutral")
         self.assertEqual(words, [])
+
+    def test_no_false_positive_substring_ban_in_banking(self):
+        # regression: "ban" must not match inside "banking" (found in a live run)
+        s, words = cnv.classify_sentiment("Tether backs fintech bringing USDT payments to banking")
+        self.assertEqual(s, "neutral")
+        self.assertEqual(words, [])
+
+    def test_standalone_ban_word_still_matches(self):
+        s, words = cnv.classify_sentiment("EU weighs crypto ban next year")
+        self.assertEqual(s, "negative")
+        self.assertIn("ban", words)
 
 
 class TestVerifyAgainstMarket(unittest.TestCase):
@@ -79,6 +90,16 @@ class TestMatchTokens(unittest.TestCase):
 
     def test_no_match(self):
         matches = cnv.match_tokens("Local bakery wins award")
+        self.assertEqual(matches, [])
+
+    def test_no_false_positive_ada_inside_canada(self):
+        # regression: "ada" (cardano keyword) must not match inside "Canada"
+        matches = cnv.match_tokens("Canada regulator proposes new crypto framework")
+        self.assertEqual(matches, [])
+
+    def test_no_false_positive_sol_inside_solution(self):
+        # regression: "sol" (solana keyword) must not match inside "solution"
+        matches = cnv.match_tokens("Startup ships a new payments solution")
         self.assertEqual(matches, [])
 
 
