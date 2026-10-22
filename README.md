@@ -56,6 +56,13 @@ It's also a free companion to the other
 [freelance/crypto CLI tools](https://github.com/kleogeos) in this portfolio —
 same zero-deps philosophy.
 
+## More free tools
+
+Also need invoices, proposals, contracts, or a crypto↔RUB calculator? See the
+[Freelancer Starter Kit](https://kleogeos.github.io/freelancer-tools/kit.html?src=cli-cryptonewsverifier-js)
+or the full [Freelancer Toolbox](https://kleogeos.github.io/freelancer-tools/donate.html?src=cli-cryptonewsverifier-js) —
+free and will stay free.
+
 ## Honesty notes
 
 - This is a decision-support/educational tool, not investment advice. No real
